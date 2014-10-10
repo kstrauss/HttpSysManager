@@ -1,0 +1,28 @@
+﻿<Window x:Class="HttpSysManager.SSLInfoOptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:slash="clr-namespace:SlasheneFramework.UI;assembly=SlasheneFramework.UI"
+        xmlns:local="clr-namespace:HttpSysManager"
+        SizeToContent="WidthAndHeight"
+        MaxWidth="350"
+        >
+    <DockPanel x:Name="root" LastChildFill="False">
+        <StackPanel DockPanel.Dock="Top"  Orientation="Horizontal">
+            <TextBlock Text="Server certificate : "></TextBlock>
+            <local:CertificateSelector SelectedCertificate="{Binding Certificate, Mode=TwoWay}"></local:CertificateSelector>
+        </StackPanel>
+        <CheckBox DockPanel.Dock="Top" IsChecked="{Binding NegotiateClientCert, Mode=TwoWay}">Negotiate client certificate</CheckBox>
+        <CheckBox DockPanel.Dock="Top"  IsChecked="{Binding CertificateAccountMapping, Mode=TwoWay}">Directory Service client certificate mapping</CheckBox>
+        <CheckBox DockPanel.Dock="Top" IsChecked="{Binding CheckClientCertificate, Mode=TwoWay}">Check client revocation</CheckBox>
+        <StackPanel DockPanel.Dock="Top"  Orientation="Horizontal">
+            <TextBox Text="CTL Store name : "></TextBox>
+            <ComboBox ItemsSource="{Binding StoreNames}" SelectedItem="{Binding CTLStoreNameProxy, Mode=TwoWay}"></ComboBox>
+        </StackPanel>
+        <slash:FormField DockPanel.Dock="Top" Text="CTL list identifier "  IsEnabled="{Binding HasCTLStore}" Value="{Binding CTLIdentifierProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></slash:FormField>
+        <!--<slash:FormField  Text="CTL list identifier " ></slash:FormField>-->
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Visibility="{Binding HasValidCTL, Converter={StaticResource NotBoolToVisibility}}" Foreground="Red">CTL not found, <Hyperlink Click="Import_CTL">import an existing CTL</Hyperlink> or <Hyperlink Click="Create_CTL">create  a new CTL</Hyperlink> (The CTL will be automatically imported in the selected store on LocalMachine)</TextBlock>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding CTLError}" Foreground="Red"></TextBlock>
+        <Button DockPanel.Dock="Left" Margin="0,20,0,0" Command="{Binding Save}">Apply</Button>
+        <Button DockPanel.Dock="Right" Margin="0,20,0,0" Command="{Binding Save}" Click="Save_Click" >Save</Button>
+    </DockPanel>
+</Window>

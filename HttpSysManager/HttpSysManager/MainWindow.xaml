@@ -1,0 +1,83 @@
+﻿<Window x:Class="HttpSysManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:slash="clr-namespace:SlasheneFramework.UI;assembly=SlasheneFramework.UI" 
+        xmlns:num="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+        xmlns:local="clr-namespace:HttpSysManager"
+        Title="http.sys Manager - HTTP Server API configuration" Height="350" Width="525">
+    <DockPanel LastChildFill="False">
+        <StackPanel DockPanel.Dock="Bottom" Margin="5" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" >
+            <TextBlock xml:space="preserve">by </TextBlock>
+            <local:HyperlinkButton Text="Nicolas Dorier" GoTo="http://www.nicolas-dorier.com/"></local:HyperlinkButton>
+        </StackPanel>
+        <TabControl DockPanel.Dock="Top">
+            <TabItem Header="SSL">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center">Ip</TextBlock>
+                        <TextBox Margin="10,0,0,0" Width="125" Text="{Binding SSLIp, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <TextBlock Margin="10,0,0,0" VerticalAlignment="Center">Port</TextBlock>
+                        <num:IntegerUpDown Margin="10,0,0,0" Value="{Binding SSLPort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" ></num:IntegerUpDown>
+                        <local:CertificateSelector Margin="10,0,0,0" SelectedCertificate="{Binding SelectedCertificate, Mode=TwoWay}"></local:CertificateSelector>
+                        <Button Margin="10,0,0,0" Command="{Binding AddSSLCert}">Add cert info</Button>
+                    </StackPanel>
+
+                    <ListView DockPanel.Dock="Top" ItemsSource="{Binding SSLInfos}" ScrollViewer.VerticalScrollBarVisibility="Visible" KeyDown="DeleteSSLInfo_KeyDown">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+                                    <GridViewColumn Header="Endpoint" DisplayMemberBinding="{Binding Info.Endpoint}"></GridViewColumn>
+                                    <GridViewColumn Header="Actions">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Click="OptionSSLInfo_Click" DataContext="{Binding}">Options</Button>
+                                                    <Button Click="DeleteCertInfo_Click" DataContext="{Binding}">Delete</Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Acls">
+                <DockPanel>
+                    <DockPanel.Resources>
+                        <CollectionViewSource x:Key="AclsCollectionView" Source="{Binding Acls}" local:Extensions.SortBy="Prefix"></CollectionViewSource>
+                    </DockPanel.Resources>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBox Text="{Binding NewAcl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150"></TextBox>
+                        <Button Command="{Binding CreateNewAcl}">Add new acl</Button>
+                    </StackPanel>
+                    <TextBlock DockPanel.Dock="Top"  FontWeight="Bold">Local administrators don't need ACL to listen <Hyperlink NavigateUri="http://msdn.microsoft.com/en-us/library/windows/desktop/aa364698(v=vs.85).aspx" RequestNavigate="OnNavigate">url prefixes</Hyperlink>.</TextBlock>
+                    <ListView DockPanel.Dock="Top" ItemsSource="{Binding Source={StaticResource AclsCollectionView}}"  KeyDown="DeleteUrlACL_KeyDown">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.Columns>
+                                    <GridViewColumn Header="Prefix" DisplayMemberBinding="{Binding Prefix}"></GridViewColumn>
+                                    <GridViewColumn Header="Actions">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button DataContext="{Binding}" Click="Permissions_Click">Permissions</Button>
+                                                    <Button DataContext="{Binding}" Click="Delete_Click">Delete</Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView.Columns>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Certificate Trust List (CTL)">
+                <Button Click="CreateCTLClick">Create new CTL</Button>
+            </TabItem>
+        </TabControl>
+        
+    </DockPanel>
+</Window>

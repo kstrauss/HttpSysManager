@@ -1,0 +1,27 @@
+﻿<Window x:Class="HttpSysManager.CreateCTLWizard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:slash="clr-namespace:SlasheneFramework.UI;assembly=SlasheneFramework.UI"
+        xmlns:local="clr-namespace:HttpSysManager"
+        Title="Create CTL" SizeToContent="WidthAndHeight" MinHeight="200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DockPanel LastChildFill="False">
+            <slash:FormField DockPanel.Dock="Top"  Text="CTL Identifier" Value="{Binding CTLInfo.ListIdentifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></slash:FormField>
+            <local:CertificateListView
+                DockPanel.Dock="Top"
+                ItemsSource="{Binding Signers}"  
+                Label="Signers" 
+                ShouldHavePrivateKey="True"></local:CertificateListView>
+            <local:CertificateListView
+                DockPanel.Dock="Top"
+                ItemsSource="{Binding CTLInfo.Certificates}"  
+                Label="Certificates" 
+                ShouldHavePrivateKey="False"></local:CertificateListView>
+        </DockPanel>
+        <Button Grid.Row="1" Click="Save_Click">Save</Button>
+    </Grid>
+</Window>

@@ -1,0 +1,12 @@
+﻿<Application x:Class="HttpSysManager.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:HttpSysManager"
+             xmlns:slash="clr-namespace:SlasheneFramework.UI;assembly=SlasheneFramework.UI"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+         <local:X509CertificateNameConverter x:Key="CertificateNameConverter"></local:X509CertificateNameConverter>
+        <slash:BoolToVisibilityConverter x:Key="BoolToVisibility"></slash:BoolToVisibilityConverter>
+        <slash:BoolToVisibilityConverter x:Key="NotBoolToVisibility" Inversed="True"></slash:BoolToVisibilityConverter>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,26 @@
+﻿<Window x:Class="HttpSysManager.CertificateSelectorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:slash="clr-namespace:SlasheneFramework.UI;assembly=SlasheneFramework.UI"
+        xmlns:local="clr-namespace:HttpSysManager"
+        SizeToContent="WidthAndHeight"
+        Title="How do you select your certificate ?">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Right"  Width="3" Fill="Gray" />
+        <StackPanel Margin="50">
+            <TextBlock Visibility="{Binding Window.ShouldImportCertificate, Converter={StaticResource BoolToVisibility}}" FontWeight="Bold" Margin="0,0,0,10">This certificate will be installed in LocalMachine/My</TextBlock>
+            <slash:FileField Text="Certificate file " SelectedPath="{Binding CertificatePath, Mode=TwoWay}"></slash:FileField>
+            <slash:FormField Text="Password " Margin="0,20,0,20" Value="{Binding Password, Mode=TwoWay}" ></slash:FormField>
+            <Button Command="{Binding Submit}" Margin="0,0,0,20">Ok</Button>
+            <TextBlock Foreground="Red" Text="{Binding ErrorMessage}"></TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="50">
+            <local:HyperlinkButton  Text="Select from LocalMachine/My" Click="SelectCertificate_Click" ></local:HyperlinkButton>
+            <TextBlock x:Name="storeErrorMessage" Foreground="Red" ></TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>
